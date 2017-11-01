@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/gugahoi/dogwatch/pkg/cmd"
 	"github.com/gugahoi/dogwatch/pkg/subcmd"
@@ -30,5 +31,6 @@ func usage() {
 		#########   ########   ########    ###   ###   ###     ### ###     ########  ###    ###
 	
 	VERSION: %s
-	`, version)
+	BUILD DATE: %s
+	`, version, time.Now().Format("2006-01-02"))
 }

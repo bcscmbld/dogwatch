@@ -23,8 +23,7 @@ func (cmd *List) Usage() {
 	t := `
 	dogwatch list (movie|tv) [-a apikey]
 		* list movie or series in the watchlist
-		-a dognzb apikey
-	`
+		-a dognzb apikey`
 	fmt.Fprintf(os.Stderr, t) // nolint: gas
 }
 
