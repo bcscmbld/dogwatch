@@ -49,7 +49,14 @@ func (cmd *List) Run() int {
 	}
 
 	for _, item := range items {
-		fmt.Fprintf(os.Stdout, "%s | %d | tt%d\n", item.Title, item.Year, item.ImdbID) // nolint: gas
+		// nolint: gas
+		fmt.Fprintf(
+			os.Stdout,
+			"%s | %d | tt%d\n",
+			item.Title,
+			item.Year,
+			item.ImdbID,
+		)
 	}
 	return 0
 }
