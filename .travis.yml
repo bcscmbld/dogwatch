@@ -4,3 +4,4 @@ go:
 
 before_script: 
   - go get -u gopkg.in/alecthomas/gometalinter.v1
+  - gometalinter.v1 --install
