@@ -29,7 +29,7 @@ func Parse(usage func(), commands ...subCommand) int {
 		usage()
 		for _, sc := range scp {
 			sc.cmd.Usage()
-			fmt.Fprintf(os.Stderr, "\n")
+			fmt.Fprintf(os.Stderr, "\n") // nolint: gas
 		}
 	}
 	flag.Parse()
@@ -48,7 +48,7 @@ func Parse(usage func(), commands ...subCommand) int {
 		return sc.cmd.Run()
 	}
 
-	fmt.Fprintf(os.Stderr, "invalid command %s", cmdName)
+	fmt.Fprintf(os.Stderr, "invalid command %s", cmdName) // nolint: gas
 	flag.Usage()
 	return 64
 }

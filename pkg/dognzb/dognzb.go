@@ -26,12 +26,13 @@ func New(api string) *DogNZB {
 
 func (d *DogNZB) buildURL(verb string, t Type, id string) string {
 	params := url.Values{
-		"t":      []string{verb},
-		"o":      []string{"json"},
-		"apikey": []string{d.api},
+		"t":       []string{verb},
+		"o":       []string{"json"},
+		"apikey":  []string{d.api},
+		string(t): []string{id},
 	}
 
-	return fmt.Sprintf("%s/watchlist?%s=%s&%s", dogNZBURL, t, id, params.Encode())
+	return fmt.Sprintf("%s/watchlist?%s", dogNZBURL, params.Encode())
 }
 
 func (d *DogNZB) get(url string) (Query, error) {
@@ -41,7 +42,7 @@ func (d *DogNZB) get(url string) (Query, error) {
 	}
 
 	b, err := ioutil.ReadAll(r.Body)
-	r.Body.Close()
+	defer r.Body.Close() // nolint: errcheck
 	if err != nil {
 		return Query{}, fmt.Errorf("failed reading body: %v", err)
 	}
@@ -61,9 +62,6 @@ func (d *DogNZB) List(t Type) ([]Item, error) {
 		return nil, err
 	}
 
-	for _, item := range q.Channel.Items {
-		fmt.Println(item.Title)
-	}
 	return q.Channel.Items, nil
 }
 

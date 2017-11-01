@@ -20,11 +20,12 @@ func (cmd *List) Name() string {
 
 // Usage is the usage instructions for the list command
 func (cmd *List) Usage() {
-	t := `%[1]s list (movie|tv) [-a apikey]
-	* list movie or series in the watchlist
-	-a dognzb apikey
+	t := `
+	dogwatch list (movie|tv) [-a apikey]
+		* list movie or series in the watchlist
+		-a dognzb apikey
 	`
-	fmt.Fprintf(os.Stderr, t, os.Args[0])
+	fmt.Fprintf(os.Stderr, t) // nolint: gas
 }
 
 // DefineFlags are the flags the list command accepts
@@ -37,18 +38,18 @@ func (cmd *List) Run() int {
 	d := dognzb.New(*cmd.api)
 
 	if *cmd.api == "" {
-		fmt.Fprintf(os.Stderr, "Missing required parameter 'apikey'")
+		fmt.Fprintf(os.Stderr, "Missing required parameter 'apikey'\n") // nolint: gas
 		return 32
 	}
 
 	items, err := d.List(dognzb.Movies)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to list: %v", err)
+		fmt.Fprintf(os.Stderr, "Failed to list: %v\n ", err) // nolint: gas
 		return 32
 	}
 
 	for _, item := range items {
-		fmt.Fprintf(os.Stdout, "%s (%d)", item.Title, item.Year)
+		fmt.Fprintf(os.Stdout, "%s | %d | tt%d\n", item.Title, item.Year, item.ImdbID) // nolint: gas
 	}
 	return 0
 }

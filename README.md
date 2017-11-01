@@ -46,3 +46,14 @@ func main() {
     d.Add(dognzb.Movies, "tt123455")
 }
 ```
+
+## Development
+
+### Dependendencies
+
+* gometalinter
+
+```bash
+go get -u gopkg.in/alecthomas/gometalinter.v1
+gometalinter.v1 --install
+```
