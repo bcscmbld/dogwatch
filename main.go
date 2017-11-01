@@ -1,17 +1,29 @@
 package main
 
 import (
-	"github.com/gugahoi/dogwatch/pkg/dognzb"
+	"fmt"
+	"os"
+
+	"github.com/gugahoi/dogwatch/pkg/cmd"
+	"github.com/gugahoi/dogwatch/pkg/subcmd"
 )
 
 func main() {
-	dogNZBAPI := ""
+	e := subcmd.Parse(
+		usage,
+		new(cmd.List),
+	)
+	os.Exit(e)
+}
 
-	d := dognzb.New(dogNZBAPI)
-
-	// List movies in watchlist
-	d.List(dognzb.Movies)
-
-	// List shows in watchlist
-	d.List(dognzb.TV)
+func usage() {
+	fmt.Println(`
+		:::::::::   ::::::::   ::::::::  :::       :::     ::: ::::::::::: ::::::::  :::    ::: 
+		:+:    :+: :+:    :+: :+:    :+: :+:       :+:   :+: :+:   :+:    :+:    :+: :+:    :+: 
+		+:+    +:+ +:+    +:+ +:+        +:+       +:+  +:+   +:+  +:+    +:+        +:+    +:+ 
+		+#+    +:+ +#+    +:+ :#:        +#+  +:+  +#+ +#++:++#++: +#+    +#+        +#++:++#++ 
+		+#+    +#+ +#+    +#+ +#+   +#+# +#+ +#+#+ +#+ +#+     +#+ +#+    +#+        +#+    +#+ 
+		#+#    #+# #+#    #+# #+#    #+#  #+#+# #+#+#  #+#     #+# #+#    #+#    #+# #+#    #+# 
+		#########   ########   ########    ###   ###   ###     ### ###     ########  ###    ### 			
+	`)
 }
