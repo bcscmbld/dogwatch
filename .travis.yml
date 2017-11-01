@@ -2,6 +2,7 @@ language: go
 go:
   - 1.9
 
+go_import_path: github.com/gugahoi/dogwatch
 before_script: 
   - go get -u gopkg.in/alecthomas/gometalinter.v1
   - gometalinter.v1 --install

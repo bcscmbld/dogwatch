@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/gugahoi/dogwatch/pkg/cmd"
+	"github.com/gugahoi/dogwatch/cmd"
 	"github.com/gugahoi/dogwatch/pkg/subcmd"
 )
 
