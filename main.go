@@ -6,17 +6,15 @@ import (
 	"time"
 
 	"github.com/gugahoi/dogwatch/cmd"
-	"github.com/gugahoi/dogwatch/pkg/subcmd"
 )
 
 var version = "SNAPSHOT"
 
 func main() {
-	e := subcmd.Parse(
-		usage,
-		new(cmd.List),
-	)
-	os.Exit(e)
+	if err := cmd.RootCmd.Execute(); err != nil {
+		fmt.Fprintf(os.Stderr, "%v", err) // nolint: gas
+		os.Exit(1)
+	}
 }
 
 //nolint

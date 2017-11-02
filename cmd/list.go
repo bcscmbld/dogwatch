@@ -1,50 +1,44 @@
 package cmd
 
 import (
-	"flag"
 	"fmt"
 	"os"
 
 	"github.com/gugahoi/dogwatch/pkg/dognzb"
+	"github.com/spf13/cobra"
 )
 
-// List is the list subcommand
-type List struct {
-	api *string
+func init() {
+	listCmd.AddCommand(listMoviesCmd, listTVCmd)
 }
 
-// Name is the name of the list command
-func (cmd *List) Name() string {
-	return "list"
+var listCmd = &cobra.Command{
+	Use:   "list",
+	Short: "List items from watchlist",
+	RunE:  nil,
 }
 
-// Usage is the usage instructions for the list command
-func (cmd *List) Usage() {
-	t := `
-	dogwatch list (movie|tv) [-a apikey]
-		* list movie or series in the watchlist
-		-a dognzb apikey`
-	fmt.Fprintf(os.Stderr, t) // nolint: gas
+var listMoviesCmd = &cobra.Command{
+	Use:   "movies",
+	Short: "List movies from watchlist",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return list(dognzb.Movies)
+	},
 }
 
-// DefineFlags are the flags the list command accepts
-func (cmd *List) DefineFlags(fs *flag.FlagSet) {
-	cmd.api = fs.String("a", "", "apikey")
+var listTVCmd = &cobra.Command{
+	Use:   "tv",
+	Short: "List tv shows from watchlist",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return list(dognzb.TV)
+	},
 }
 
-// Run is what happens when the list cmd is called
-func (cmd *List) Run() int {
-	d := dognzb.New(*cmd.api)
-
-	if *cmd.api == "" {
-		fmt.Fprintf(os.Stderr, "Missing required parameter 'apikey'\n") // nolint: gas
-		return 32
-	}
-
-	items, err := d.List(dognzb.Movies)
+func list(t dognzb.Type) error {
+	d := dognzb.New(api)
+	items, err := d.List(t)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to list: %v\n ", err) // nolint: gas
-		return 32
+		return fmt.Errorf("Failed to list movies: %v\n ", err) // nolint: gas
 	}
 
 	for _, item := range items {
@@ -57,5 +51,5 @@ func (cmd *List) Run() int {
 			item.ImdbID,
 		)
 	}
-	return 0
+	return nil
 }

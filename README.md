@@ -10,7 +10,7 @@ DogWatch is a DogNZB cli tool and library to interact with DogNZB's Watchlists. 
 
 ```bash
 # List all movies in watchlist
-dogwatch list movie --apikey SOME-API-KEY
+dogwatch list movies --apikey SOME-API-KEY
 
 # List all series in watchlist
 dogwatch list tv --apikey SOME-API-KEY
@@ -51,11 +51,15 @@ func main() {
 
 ## Development
 
-### Dependendencies
-
-* gometalinter
+This project uses [`dep`](https://github.com/golang/dep) as the dependency manager.
 
 ```bash
-go get -u gopkg.in/alecthomas/gometalinter.v1
-gometalinter.v1 --install
+# download deps
+dep ensure
+
+# build
+go build *.go -o dogwatch
+
+# profit!
+./dogwatch --help
 ```
