@@ -15,5 +15,4 @@ func init() {
 var RootCmd = &cobra.Command{
 	Use:   "dogwtach",
 	Short: "dogwatch is a cli tool to interact with DogNZB's Watchlists",
-	RunE:  nil,
 }
