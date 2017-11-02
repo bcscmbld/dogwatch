@@ -1,6 +1,7 @@
 # DogWatch
 
 [![Build Status](https://travis-ci.org/gugahoi/dogwatch.svg?branch=master)](https://travis-ci.org/gugahoi/dogwatch)
+[![Coverage Status](https://coveralls.io/repos/github/gugahoi/dogwatch/badge.svg?branch=master)](https://coveralls.io/github/gugahoi/dogwatch?branch=master)
 
 DogWatch is a DogNZB cli tool and library to interact with DogNZB's Watchlists. It supports adding, removing and listing items in both TV and Movies watchlists.
 

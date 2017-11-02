@@ -12,7 +12,7 @@ const (
 	dogNZBURL = "https://api.dognzb.cr"
 )
 
-// DogNZB is a struct to talk to dog's api
+// DogNZB is a struct to talk to DogNZB's api
 type DogNZB struct {
 	api string
 }
