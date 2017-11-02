@@ -7,7 +7,7 @@ import (
 	"github.com/gugahoi/dogwatch/cmd"
 )
 
-var version = "SNAPSHOT"
+var version string
 
 func main() {
 	if err := cmd.RootCmd.Execute(); err != nil {

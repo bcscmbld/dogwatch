@@ -8,10 +8,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func init() {
-	listCmd.AddCommand(listMoviesCmd, listTVCmd)
-}
-
 var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List items from watchlist",
