@@ -21,6 +21,10 @@ var RootCmd = &cobra.Command{
 	Use:   "dogwtach",
 	Short: "dogwatch is a cli tool to interact with DogNZB's Watchlists",
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+		if cmd.Name() == "version" {
+			return nil
+		}
+
 		if api == "" {
 			api = os.Getenv("DOGNZB_API")
 			if api == "" {
