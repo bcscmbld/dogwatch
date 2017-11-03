@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:newznab="http://www.newznab.com/DTD/2010/feeds/attributes/">
+    <channel>
+        <title>DOGnzb</title>
+        <description>TV Shows Watchlist Feed</description>
+        <uuid>3F3DFA7D</uuid>
+        <newznab:response total="2" />
+        <item>
+            <title>Game of Thrones</title>
+            <tvdbid>121361</tvdbid>
+            <plot>Seven noble families fight for control of the mythical land of Westeros. Friction between the houses leads to full-scale war. All while a very ancient evil awakens in the farthest north. Amidst the war, a neglected military order of misfits, the Night's Watch, is all that stands between the realms of men and the icy horrors beyond.</plot>
+            <actors>Peter Dinklage,Emilia Clarke,Kit Harington,Lena Headey,Maisie Williams,Sophie Turner,Nikolaj Coster-Waldau,Isaac Hempstead-Wright,Conleth Hill,John Bradley</actors>
+            <genres>Adventure,Drama,Fantasy</genres>
+            <network>HBO</network>
+            <status>Continuing</status>
+            <trailer>http://www.youtube.com/watch?v=yu8eRaq1FUM</trailer>
+            <poster>http://dognzb.cr/content/covers/tv/nocover.png</poster>
+        </item>
+        <item>
+            <title>Unlikely Animal Friends</title>
+            <tvdbid>264210</tvdbid>
+            <plot>Friends are there for you when you need a shoulder to lean on. But who says only humans have friends? Join us for Unlikely Animal Friends!</plot>
+            <actors></actors>
+            <genres>Reality</genres>
+            <network>National Geographic</network>
+            <status></status>
+            <trailer>http://www.youtube.com/watch?v=</trailer>
+            <poster>http://dognzb.cr/content/covers/tv/nocover.png</poster>
+        </item>
+    </channel>
+</rss>

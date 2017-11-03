@@ -36,19 +36,28 @@ func TestListHappyPath(t *testing.T) {
 	testCases := []struct {
 		desc   string
 		api    string
+		kind   dognzb.Type
 		size   int
 		status int
 	}{
 		{
-			desc:   "5_movies",
+			desc:   "4_movies",
 			api:    "a-valid-api",
+			kind:   dognzb.Movies,
 			status: http.StatusOK,
-			size:   5,
+			size:   4,
 		}, {
 			desc:   "0_movies",
 			api:    "a-valid-api",
+			kind:   dognzb.Movies,
 			status: http.StatusOK,
 			size:   0,
+		}, {
+			desc:   "2_series",
+			api:    "a-valid-api",
+			kind:   dognzb.TV,
+			status: http.StatusOK,
+			size:   2,
 		},
 	}
 	for _, tC := range testCases {
@@ -63,14 +72,22 @@ func TestListHappyPath(t *testing.T) {
 			})
 
 			// act
-			q, err := d.List(dognzb.Movies)
+			items, err := d.List(tC.kind)
 
 			// assert
 			if err != nil {
 				t.Errorf("expected err to be '%v', got '%v'", nil, err)
 			}
-			if size := len(q); size != tC.size {
+			if size := len(items); size != tC.size {
 				t.Errorf("expected size to be %v, got %v", tC.size, size)
+			}
+			for _, item := range items {
+				if tC.kind == dognzb.TV && item.TVdbID == "" {
+					t.Error("expected tvdbid to not be \"\"")
+				}
+				if tC.kind == dognzb.Movies && item.ImdbID == "" {
+					t.Error("expected imdbid to not be \"\"")
+				}
 			}
 		})
 	}

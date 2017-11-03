@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:newznab="http://www.newznab.com/DTD/2010/feeds/attributes/">
+    <channel>
+        <title>DOGnzb</title>
+        <description>Movie Watchlist Feed</description>
+        <uuid>D2E766A3</uuid>
+        <newznab:response total="4" />
+        <item>
+            <title>Laddie</title>
+            <imdbid>4214198</imdbid>
+            <plot>Profile of the producer and former studio head of 20th Century Fox in the 1970s, Alan Ladd Jr.</plot>
+            <actors>Ben Affleck,Mel Gibson,Morgan Freeman,Sigourney Weaver,Ron Howard,Ridley Scott,George Lucas,Mel Brooks,Richard Donner,Paul Mazursky</actors>
+            <genres>Documentary</genres>
+            <year>2017</year>
+            <runtime>90</runtime>
+            <certification></certification>
+            <trailer>http://www.youtube.com/watch?v=</trailer>
+            <poster>http://dognzb.cr/content/covers/movies/4214198.jpg</poster>
+        </item>
+        <item>
+            <title>Star Wars Rebels: Heroes of Mandalore</title>
+            <imdbid>6603454</imdbid>
+            <plot>Sabine leads Ezra, Kanan and an army of her fellow Mandalorians back to her home world to rescue her father from the clutches of the Empire. When she discovers that the Empire has resurrected a devastating weapon she created and plans to use it against her people, she must decide whether to destroy it or use it herself.</plot>
+            <actors>Taylor Gray,Vanessa Marshall,Freddie Prinze Jr.,Tiya Sircar,Steve Blum,Warwick Davis,Sharmila Devar,Ritesh Rajan,Katee Sackhoff,Kevin McKidd</actors>
+            <genres>Action,Animation,Science Fiction,Fantasy</genres>
+            <year>2017</year>
+            <runtime>44</runtime>
+            <certification></certification>
+            <trailer>http://www.youtube.com/watch?v=</trailer>
+            <poster>http://dognzb.cr/content/covers/movies/6603454.jpg</poster>
+        </item>
+        <item>
+            <title>The Big Sick</title>
+            <imdbid>5462602</imdbid>
+            <plot>Pakistan-born comedian Kumail Nanjiani and grad student Emily Gardner fall in love but struggle as their cultures clash. When Emily contracts a mysterious illness, Kumail finds himself forced to face her feisty parents, his family's expectations, and his true feelings.</plot>
+            <actors>Kumail Nanjiani,Zoe Kazan,Holly Hunter,Ray Romano,Anupam Kher,Zenobia Shroff,Adeel Akhtar,Bo Burnham,Aidy Bryant,Kurt Braunohler</actors>
+            <genres>Comedy,Drama,Romance</genres>
+            <year>2017</year>
+            <runtime>120</runtime>
+            <certification></certification>
+            <trailer>http://www.youtube.com/watch?v=K4i-5ip74FA</trailer>
+            <poster>http://dognzb.cr/content/covers/movies/5462602.jpg</poster>
+        </item>
+        <item>
+            <title>The Vietnam War</title>
+            <imdbid>1877514</imdbid>
+            <plot>Ken Burns and Lynn Novick's ten-part, 18-hour documentary series, THE VIETNAM WAR, tells the epic story of one of the most consequential, divisive, and controversial events in American history as it has never before been told on film. Visceral and immersive, the series explores the human dimensions of the war through revelatory testimony of nearly 80 witnesses from all sides-Americans who fought in the war and others who opposed it, as well as combatants and civilians from North and South Vietnam. Ten years in the making, the series includes rarely seen and digitally re-mastered archival footage from sources around the globe, photographs taken by some of the most celebrated photojournalists of the 20th Century, historic television broadcasts, evocative home movies, and secret audio recordings from inside the Kennedy, Johnson, and Nixon administrations.</plot>
+            <actors>Peter Coyote</actors>
+            <genres>Documentary</genres>
+            <year>2016</year>
+            <runtime>1080</runtime>
+            <certification>NR</certification>
+            <trailer>http://www.youtube.com/watch?v=</trailer>
+            <poster>http://dognzb.cr/content/covers/movies/1877514.jpg</poster>
+        </item>
+    </channel>
+</rss>
