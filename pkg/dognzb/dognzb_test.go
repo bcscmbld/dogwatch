@@ -1,7 +1,14 @@
 package dognzb_test
 
-import "testing"
-import "github.com/gugahoi/dogwatch/pkg/dognzb"
+import (
+	"bytes"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"testing"
+
+	"github.com/gugahoi/dogwatch/pkg/dognzb"
+)
 
 func TestNew(t *testing.T) {
 	testCases := []struct {
@@ -17,10 +24,62 @@ func TestNew(t *testing.T) {
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
-			d := dognzb.New(tC.api)
+			d := dognzb.New(tC.api, &http.Client{})
 			if d == nil {
 				t.Errorf("Expected a dognzb object, got nil")
 			}
 		})
 	}
+}
+
+func TestListHappyPath(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		api    string
+		size   int
+		status int
+	}{
+		{
+			desc:   "5_movies",
+			api:    "a-valid-api",
+			status: http.StatusOK,
+			size:   5,
+		}, {
+			desc:   "0_movies",
+			api:    "a-valid-api",
+			status: http.StatusOK,
+			size:   0,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			// arrange
+			body, _ := ioutil.ReadFile(fmt.Sprintf("./fixtures/list_%s.xml", tC.desc))
+			d := dognzb.New(tC.api, &mockGetter{
+				response: &http.Response{
+					StatusCode: tC.status,
+					Body:       ioutil.NopCloser(bytes.NewReader(body)),
+				},
+			})
+
+			// act
+			q, err := d.List(dognzb.Movies)
+
+			// assert
+			if err != nil {
+				t.Errorf("expected err to be '%v', got '%v'", nil, err)
+			}
+			if size := len(q); size != tC.size {
+				t.Errorf("expected size to be %v, got %v", tC.size, size)
+			}
+		})
+	}
+}
+
+type mockGetter struct {
+	response *http.Response
+}
+
+func (m *mockGetter) Get(url string) (*http.Response, error) {
+	return m.response, nil
 }

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 
 	"github.com/gugahoi/dogwatch/pkg/dognzb"
@@ -31,7 +32,7 @@ var listTVCmd = &cobra.Command{
 }
 
 func list(t dognzb.Type) error {
-	d := dognzb.New(api)
+	d := dognzb.New(api, &http.Client{})
 	items, err := d.List(t)
 	if err != nil {
 		return fmt.Errorf("Failed to list movies: %v\n ", err) // nolint: gas
