@@ -63,7 +63,7 @@ func TestListHappyPath(t *testing.T) {
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
 			// arrange
-			body, _ := ioutil.ReadFile(fmt.Sprintf("./fixtures/list_%s.xml", tC.desc))
+			body, _ := ioutil.ReadFile(fmt.Sprintf("./fixtures/list/%s.xml", tC.desc))
 			d := dognzb.New(tC.api, &mockGetter{
 				response: &http.Response{
 					StatusCode: tC.status,
@@ -121,7 +121,7 @@ func TestListSadPath(t *testing.T) {
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
 			// arrange
-			body, _ := ioutil.ReadFile(fmt.Sprintf("./fixtures/list_%s.xml", tC.desc))
+			body, _ := ioutil.ReadFile(fmt.Sprintf("./fixtures/list/%s.xml", tC.desc))
 			d := dognzb.New(tC.api, &mockGetter{
 				response: &http.Response{
 					StatusCode: tC.status,
