@@ -72,7 +72,7 @@ func (d *DogNZB) get(url string) (Query, error) {
 }
 
 // List lists the item in the appropriate watchlist (tv or movie)
-func (d *DogNZB) List(t Type) ([]Item, error) {
+func (d *DogNZB) List(t Type) ([]MovieItem, error) {
 	q, err := d.get(d.buildURL("list", t, ""))
 	if err != nil {
 		return nil, err

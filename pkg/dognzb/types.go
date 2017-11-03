@@ -20,16 +20,16 @@ type Query struct {
 
 // Channel ...
 type Channel struct {
-	Title       string `xml:"title"`
-	Description string `xml:"description"`
-	UUID        string `xml:"uuid"`
-	Items       []Item `xml:"item"`
+	Title       string      `xml:"title"`
+	Description string      `xml:"description"`
+	UUID        string      `xml:"uuid"`
+	Items       []MovieItem `xml:"item"`
 }
 
-// Item ...
-type Item struct {
+// MovieItem ...
+type MovieItem struct {
 	Title         string `xml:"title"`
-	ImdbID        int    `xml:"imdbid"`
+	ID            int    `xml:"imdbid"`
 	Plot          string `xml:"plot"`
 	Actors        string `xml:"actors"`
 	Genres        string `xml:"genres"`
@@ -39,3 +39,16 @@ type Item struct {
 	Trailer       string `xml:"trailer"`
 	Poster        string `xml:"poster"`
 }
+
+//TVItem ...
+// type TVItem struct {
+// 	Title   string `xml:"title"`
+// 	ID      string `xml:"tvdbid"`
+// 	Plot    string `xml:"plot"`
+// 	Actors  string `xml:"actors"`
+// 	Genres  string `xml:"genres"`
+// 	Network string `xml:"network"`
+// 	Status  string `xml:"status"`
+// 	Trailer string `xml:"trailer"`
+// 	Poster  string `xml:"poster"`
+// }

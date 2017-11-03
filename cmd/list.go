@@ -35,7 +35,7 @@ func list(t dognzb.Type) error {
 	d := dognzb.New(api, &http.Client{})
 	items, err := d.List(t)
 	if err != nil {
-		return fmt.Errorf("Failed to list movies: %v\n ", err) // nolint: gas
+		return fmt.Errorf("Failed to list: %v\n ", err) // nolint: gas
 	}
 
 	for _, item := range items {
@@ -45,7 +45,7 @@ func list(t dognzb.Type) error {
 			"%s | %d | tt%d\n",
 			item.Title,
 			item.Year,
-			item.ImdbID,
+			item.ID,
 		)
 	}
 	return nil
