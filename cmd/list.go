@@ -39,13 +39,20 @@ func list(t dognzb.Type) error {
 	}
 
 	for _, item := range items {
+		var desc string
+		if item.Year != "" {
+			desc = item.Year
+		} else {
+			desc = item.Network
+		}
+
 		// nolint: gas
 		fmt.Fprintf(
 			os.Stdout,
-			"%s | %d | tt%d\n",
+			"%s | %s | %s\n",
 			item.Title,
-			item.Year,
-			item.ID,
+			desc,
+			item.GetID(),
 		)
 	}
 	return nil

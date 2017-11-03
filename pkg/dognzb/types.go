@@ -1,5 +1,9 @@
 package dognzb
 
+import (
+	"fmt"
+)
+
 // Type ...
 type Type string
 
@@ -20,35 +24,33 @@ type Query struct {
 
 // Channel ...
 type Channel struct {
-	Title       string      `xml:"title"`
-	Description string      `xml:"description"`
-	UUID        string      `xml:"uuid"`
-	Items       []MovieItem `xml:"item"`
+	Title       string `xml:"title"`
+	Description string `xml:"description"`
+	UUID        string `xml:"uuid"`
+	Items       []Item `xml:"item"`
 }
 
-// MovieItem ...
-type MovieItem struct {
+// Item ...
+type Item struct {
 	Title         string `xml:"title"`
-	ID            int    `xml:"imdbid"`
+	TVdbID        string `xml:"tvdbid"`
+	ImdbID        string `xml:"imdbid"`
 	Plot          string `xml:"plot"`
 	Actors        string `xml:"actors"`
 	Genres        string `xml:"genres"`
-	Year          int    `xml:"year"`
+	Year          string `xml:"year"`
 	Runtime       int    `xml:"runtime"`
 	Certification string `xml:"certification"`
 	Trailer       string `xml:"trailer"`
 	Poster        string `xml:"poster"`
+	Network       string `xml:"network"`
+	Status        string `xml:"status"`
 }
 
-//TVItem ...
-// type TVItem struct {
-// 	Title   string `xml:"title"`
-// 	ID      string `xml:"tvdbid"`
-// 	Plot    string `xml:"plot"`
-// 	Actors  string `xml:"actors"`
-// 	Genres  string `xml:"genres"`
-// 	Network string `xml:"network"`
-// 	Status  string `xml:"status"`
-// 	Trailer string `xml:"trailer"`
-// 	Poster  string `xml:"poster"`
-// }
+// GetID return then appropriate id from the Item (tvdbid if an tv show, imdbid if a movie)
+func (i *Item) GetID() string {
+	if i.TVdbID != "" {
+		return i.TVdbID
+	}
+	return fmt.Sprintf("tt%s", i.ImdbID)
+}
