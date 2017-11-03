@@ -42,40 +42,40 @@ func (d *DogNZB) buildURL(verb string, t Type, id string) string {
 	return fmt.Sprintf("%s/watchlist?%s", dogNZBURL, params.Encode())
 }
 
-func (d *DogNZB) get(url string) (Query, error) {
+func (d *DogNZB) get(url string) ([]byte, error) {
 	r, err := d.h.Get(url)
 	if err != nil {
-		return Query{}, fmt.Errorf("failed to list: %v", err)
+		return nil, fmt.Errorf("failed to list: %v", err)
 	}
 
 	if r.StatusCode != http.StatusOK {
-		return Query{}, fmt.Errorf("bad response: %v", r.StatusCode)
+		return nil, fmt.Errorf("bad response: %v", r.StatusCode)
 	}
 
 	b, err := ioutil.ReadAll(r.Body)
 	defer r.Body.Close() // nolint: errcheck
 	if err != nil {
-		return Query{}, fmt.Errorf("failed reading body: %v", err)
+		return nil, fmt.Errorf("failed reading body: %v", err)
 	}
 
-	var q Query
-	if err := xml.Unmarshal(b, &q); err != nil {
-		return Query{}, err
-	}
-
-	// if dognzb sent an error back, we should also error
-	if q.ErrorCode != 0 {
-		return Query{}, fmt.Errorf("%v", q.ErrorDesc)
-	}
-
-	return q, nil
+	return b, nil
 }
 
 // List lists the item in the appropriate watchlist (tv or movie)
 func (d *DogNZB) List(t Type) ([]Item, error) {
-	q, err := d.get(d.buildURL("list", t, ""))
+	b, err := d.get(d.buildURL("list", t, ""))
 	if err != nil {
 		return nil, err
+	}
+
+	var q ListQuery
+	if err := xml.Unmarshal(b, &q); err != nil {
+		return nil, err
+	}
+
+	// if dognzb sent an error back, we should also error
+	if q.ErrorCode != 0 {
+		return nil, fmt.Errorf("%v", q.ErrorDesc)
 	}
 
 	return q.Channel.Items, nil
@@ -83,12 +83,20 @@ func (d *DogNZB) List(t Type) ([]Item, error) {
 
 // Add adds an item to the appropriate watchlist (tv or movie)
 func (d *DogNZB) Add(t Type, id string) error {
-	q, err := d.get(d.buildURL("add", t, id))
+	b, err := d.get(d.buildURL("add", t, id))
 	if err != nil {
 		return err
 	}
 
-	fmt.Println(q)
+	var q AddQuery
+	if err := xml.Unmarshal(b, &q); err != nil {
+		return err
+	}
+
+	// if dognzb sent an error back, we should also error
+	if q.ErrorCode != "" {
+		return fmt.Errorf("%v", q.ErrorDesc)
+	}
 	return nil
 }
 

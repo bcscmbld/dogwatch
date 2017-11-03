@@ -1,6 +1,7 @@
 package dognzb
 
 import (
+	"encoding/xml"
 	"fmt"
 )
 
@@ -14,8 +15,8 @@ const (
 	Movies Type = "imdbid"
 )
 
-// Query ...
-type Query struct {
+// ListQuery is a struct that maps to the XML return format of the "list" call
+type ListQuery struct {
 	Channel   Channel `xml:"channel"`
 	Version   string  `xml:"version,attr"`
 	ErrorCode int     `xml:"code,attr"`
@@ -53,4 +54,50 @@ func (i *Item) GetID() string {
 		return i.TVdbID
 	}
 	return fmt.Sprintf("tt%s", i.ImdbID)
+}
+
+// AddQuery is the struct that represents the return xml format of the "add" call
+type AddQuery struct {
+	ErrorCode   string
+	ErrorDesc   string
+	Code        string
+	Description string
+}
+
+// UnmarshalXML is a custom way to convert the xml to struct.
+// As DogNZB returns the same attrs with different xml names (uuid and error) it becomes hard to figure out
+// if the requests really failed or not. Ideally the http status code would be appropriate but it is always 200.
+// It would be nice to know if there is a better way to do this...
+func (aq *AddQuery) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	switch start.Name.Local {
+	case "uuid":
+		for _, attr := range start.Attr {
+			if attr.Name.Local == "code" {
+				aq.Code = attr.Value
+			}
+			if attr.Name.Local == "description" {
+				aq.Description = attr.Value
+			}
+		}
+	case "error":
+		for _, attr := range start.Attr {
+			if attr.Name.Local == "code" {
+				aq.ErrorCode = attr.Value
+			}
+			if attr.Name.Local == "description" {
+				aq.ErrorDesc = attr.Value
+			}
+		}
+	}
+
+	// this seems oddly useless, need to find a better way to achieve it.
+	for {
+		t, _ := d.Token()
+		switch tt := t.(type) {
+		case xml.EndElement:
+			if tt == start.End() {
+				return nil
+			}
+		}
+	}
 }
