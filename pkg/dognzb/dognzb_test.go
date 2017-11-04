@@ -59,13 +59,7 @@ func TestListHappyPath(t *testing.T) {
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
 			// arrange
-			body, _ := ioutil.ReadFile(fmt.Sprintf("./fixtures/list/%s.xml", tC.desc))
-			d := dognzb.New("the-api-of-the-lists", &mockGetter{
-				response: &http.Response{
-					StatusCode: tC.status,
-					Body:       ioutil.NopCloser(bytes.NewReader(body)),
-				},
-			})
+			d := NewMockGetter("list", tC.desc, tC.status)
 
 			// act
 			items, err := d.List(tC.kind)
@@ -112,13 +106,7 @@ func TestListSadPath(t *testing.T) {
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
 			// arrange
-			body, _ := ioutil.ReadFile(fmt.Sprintf("./fixtures/list/%s.xml", tC.desc))
-			d := dognzb.New("the-bad-list-api", &mockGetter{
-				response: &http.Response{
-					StatusCode: tC.status,
-					Body:       ioutil.NopCloser(bytes.NewReader(body)),
-				},
-			})
+			d := NewMockGetter("list", tC.desc, tC.status)
 
 			// act
 			_, err := d.List(dognzb.Movies)
@@ -152,13 +140,7 @@ func TestAddHappyPath(t *testing.T) {
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
 			// arrange
-			body, _ := ioutil.ReadFile(fmt.Sprintf("./fixtures/add/%s.xml", tC.desc))
-			d := dognzb.New("another-api", &mockGetter{
-				response: &http.Response{
-					StatusCode: http.StatusOK,
-					Body:       ioutil.NopCloser(bytes.NewReader(body)),
-				},
-			})
+			d := NewMockGetter("add", tC.desc, http.StatusOK)
 
 			// act
 			err := d.Add(tC.kind, tC.id)
@@ -173,24 +155,36 @@ func TestAddHappyPath(t *testing.T) {
 
 func TestAddSadPath(t *testing.T) {
 	testCases := []struct {
-		desc string
-		kind dognzb.Type
-		id   string
+		desc   string
+		kind   dognzb.Type
+		id     string
+		errMsg string
+		status int
 	}{
 		{
-			desc: "already_exists", kind: dognzb.TV, id: "247808",
+			desc:   "already_exists",
+			kind:   dognzb.TV,
+			id:     "247808",
+			status: http.StatusOK,
+			errMsg: "Game of Thrones already exists in your TV Watchlist.",
+		}, {
+			desc:   "404_response",
+			kind:   dognzb.TV,
+			id:     "234234",
+			status: http.StatusNotFound,
+			errMsg: "bad response: 404",
+		}, {
+			desc:   "empty_response",
+			kind:   dognzb.Movies,
+			status: http.StatusOK,
+			id:     "5637",
+			errMsg: "EOF",
 		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
 			// arrange
-			body, _ := ioutil.ReadFile(fmt.Sprintf("./fixtures/add/%s.xml", tC.desc))
-			d := dognzb.New("another-api", &mockGetter{
-				response: &http.Response{
-					StatusCode: http.StatusOK,
-					Body:       ioutil.NopCloser(bytes.NewReader(body)),
-				},
-			})
+			d := NewMockGetter("add", tC.desc, tC.status)
 
 			// act
 			err := d.Add(tC.kind, tC.id)
@@ -198,6 +192,10 @@ func TestAddSadPath(t *testing.T) {
 			// assert
 			if err == nil {
 				t.Errorf("expected err to not be '%v', got '%v'", nil, err)
+			}
+
+			if err.Error() != tC.errMsg {
+				t.Errorf("expected err to not be '%v', got '%v'", tC.errMsg, err)
 			}
 		})
 	}
@@ -243,25 +241,49 @@ func TestRemoveHappyPath(t *testing.T) {
 
 func TestRemoveSadPath(t *testing.T) {
 	testCases := []struct {
-		desc string
-		kind dognzb.Type
-		id   string
+		desc   string
+		kind   dognzb.Type
+		id     string
+		status int
+		errMsg string
 	}{
 		{
-			desc: "failed", kind: dognzb.TV, id: "247808",
+			desc:   "failed",
+			kind:   dognzb.TV,
+			id:     "247808",
+			status: http.StatusOK,
+			errMsg: "Unable to find something...",
+		}, {
+			desc:   "404_response",
+			kind:   dognzb.TV,
+			id:     "234234",
+			status: http.StatusNotFound,
+			errMsg: "bad response: 404",
+		}, {
+			desc:   "empty_response",
+			kind:   dognzb.Movies,
+			status: http.StatusOK,
+			id:     "5637",
+			errMsg: "EOF",
 		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
 			// arrange
-			d := NewMockGetter("remove", tC.desc, http.StatusOK)
+			d := NewMockGetter("remove", tC.desc, tC.status)
 
 			// act
-			_, err := d.Remove(tC.kind, tC.id)
+			q, err := d.Remove(tC.kind, tC.id)
 
 			// assert
 			if err == nil {
 				t.Errorf("expected err to be '%v', got '%v'", nil, err)
+			}
+			if q != nil {
+				t.Errorf("expected q to be '%v', got '%v'", nil, q)
+			}
+			if err.Error() != tC.errMsg {
+				t.Errorf("expected errMsg to be '%v', got '%v'", tC.errMsg, err)
 			}
 		})
 	}
@@ -279,7 +301,7 @@ func NewMockGetter(kind, name string, status int) *(dognzb.DogNZB) {
 	body, _ := ioutil.ReadFile(fmt.Sprintf("./fixtures/%s/%s.xml", kind, name))
 	return dognzb.New("another-api", &mockGetter{
 		response: &http.Response{
-			StatusCode: http.StatusOK,
+			StatusCode: status,
 			Body:       ioutil.NopCloser(bytes.NewReader(body)),
 		},
 	})
