@@ -57,9 +57,9 @@ func (i *Item) GetID() string {
 	return fmt.Sprintf("tt%s", i.ImdbID)
 }
 
-// AddQuery is the struct that represents the return
-// xml format of the "add" call
-type AddQuery struct {
+// AddRemoveQuery is the struct that represents the return
+// xml format of the "add" and "remove" calls
+type AddRemoveQuery struct {
 	ErrorCode   string
 	ErrorDesc   string
 	Code        string
@@ -71,7 +71,7 @@ type AddQuery struct {
 // figure out if the requests really failed or not. Ideally the http status code
 // would be appropriate but it is always 200. It would be nice to know if there
 // is a better way to do this...
-func (aq *AddQuery) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+func (aq *AddRemoveQuery) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	switch start.Name.Local {
 	case "uuid":
 		for _, attr := range start.Attr {

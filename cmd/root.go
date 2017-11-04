@@ -12,9 +12,10 @@ var api string
 func init() {
 	RootCmd.PersistentFlags().StringVarP(&api, "api", "a", "", "dognzb apikey")
 	RootCmd.AddCommand(versionCmd)
-	RootCmd.AddCommand(listCmd, addCmd)
+	RootCmd.AddCommand(listCmd, addCmd, removeCmd)
 	listCmd.AddCommand(listMoviesCmd, listTVCmd)
 	addCmd.AddCommand(addMoviesCmd, addTVCmd)
+	removeCmd.AddCommand(removeMoviesCmd, removeTVCmd)
 }
 
 // RootCmd is the entrypoint into app commands

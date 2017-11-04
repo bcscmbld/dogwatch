@@ -88,7 +88,7 @@ func (d *DogNZB) Add(t Type, id string) error {
 		return err
 	}
 
-	var q AddQuery
+	var q AddRemoveQuery
 	if err := xml.Unmarshal(b, &q); err != nil {
 		return err
 	}
@@ -101,12 +101,20 @@ func (d *DogNZB) Add(t Type, id string) error {
 }
 
 // Remove removes an item from the appropriate watchlist (tv or movie)
-func (d *DogNZB) Remove(t Type, id string) error {
-	q, err := d.get(d.buildURL("remove", t, id))
+func (d *DogNZB) Remove(t Type, id string) (*AddRemoveQuery, error) {
+	b, err := d.get(d.buildURL("remove", t, id))
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	fmt.Println(q)
-	return nil
+	var q AddRemoveQuery
+	if err := xml.Unmarshal(b, &q); err != nil {
+		return nil, err
+	}
+
+	// if dognzb sent an error back, we should also error
+	if q.ErrorCode != "" {
+		return nil, fmt.Errorf("%v", q.ErrorDesc)
+	}
+	return &q, nil
 }

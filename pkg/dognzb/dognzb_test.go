@@ -203,10 +203,85 @@ func TestAddSadPath(t *testing.T) {
 	}
 }
 
+func TestRemoveHappyPath(t *testing.T) {
+	testCases := []struct {
+		desc string
+		kind dognzb.Type
+		id   string
+	}{
+		{
+			desc: "series_removed", kind: dognzb.TV, id: "247808",
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			// arrange
+			d := NewMockGetter("remove", tC.desc, http.StatusOK)
+
+			// act
+			q, err := d.Remove(tC.kind, tC.id)
+
+			// assert
+			if err != nil {
+				t.Errorf("expected err to be '%v', got '%v'", nil, err)
+			}
+			if q.Code == "" {
+				t.Errorf("expected Code to exists, got '%v'", q.Code)
+			}
+			if q.Description == "" {
+				t.Errorf("expected Description to exist, got '%v'", q.Description)
+			}
+			if q.ErrorCode != "" {
+				t.Errorf("expected no ErrorCode, got '%v'", q.ErrorCode)
+			}
+			if q.ErrorDesc != "" {
+				t.Errorf("expected no ErrorDesc, got '%v'", q.ErrorDesc)
+			}
+		})
+	}
+}
+
+func TestRemoveSadPath(t *testing.T) {
+	testCases := []struct {
+		desc string
+		kind dognzb.Type
+		id   string
+	}{
+		{
+			desc: "failed", kind: dognzb.TV, id: "247808",
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			// arrange
+			d := NewMockGetter("remove", tC.desc, http.StatusOK)
+
+			// act
+			_, err := d.Remove(tC.kind, tC.id)
+
+			// assert
+			if err == nil {
+				t.Errorf("expected err to be '%v', got '%v'", nil, err)
+			}
+		})
+	}
+}
+
 type mockGetter struct {
 	response *http.Response
 }
 
 func (m *mockGetter) Get(url string) (*http.Response, error) {
 	return m.response, nil
+}
+
+func NewMockGetter(kind, name string, status int) *(dognzb.DogNZB) {
+	body, _ := ioutil.ReadFile(fmt.Sprintf("./fixtures/%s/%s.xml", kind, name))
+	return dognzb.New("another-api", &mockGetter{
+		response: &http.Response{
+			StatusCode: http.StatusOK,
+			Body:       ioutil.NopCloser(bytes.NewReader(body)),
+		},
+	})
+
 }
