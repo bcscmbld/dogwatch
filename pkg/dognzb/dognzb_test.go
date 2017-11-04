@@ -129,7 +129,11 @@ func TestListSadPath(t *testing.T) {
 			}
 
 			if err.Error() != tC.errMsg {
-				t.Errorf("expected error message to be '%v', got '%v'", tC.errMsg, err.Error())
+				t.Errorf(
+					"expected error message to be '%v', got '%v'",
+					tC.errMsg,
+					err.Error(),
+				)
 			}
 		})
 	}

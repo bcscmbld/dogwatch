@@ -48,7 +48,8 @@ type Item struct {
 	Status        string `xml:"status"`
 }
 
-// GetID return then appropriate id from the Item (tvdbid if an tv show, imdbid if a movie)
+// GetID return then appropriate id from the Item (tvdbid if a
+// tv show, imdbid if a movie)
 func (i *Item) GetID() string {
 	if i.TVdbID != "" {
 		return i.TVdbID
@@ -56,7 +57,8 @@ func (i *Item) GetID() string {
 	return fmt.Sprintf("tt%s", i.ImdbID)
 }
 
-// AddQuery is the struct that represents the return xml format of the "add" call
+// AddQuery is the struct that represents the return
+// xml format of the "add" call
 type AddQuery struct {
 	ErrorCode   string
 	ErrorDesc   string
@@ -64,10 +66,11 @@ type AddQuery struct {
 	Description string
 }
 
-// UnmarshalXML is a custom way to convert the xml to struct.
-// As DogNZB returns the same attrs with different xml names (uuid and error) it becomes hard to figure out
-// if the requests really failed or not. Ideally the http status code would be appropriate but it is always 200.
-// It would be nice to know if there is a better way to do this...
+// UnmarshalXML is a custom way to convert the xml to struct. As DogNZB returns
+// the same attrs with different xml names (uuid and error) it becomes hard to
+// figure out if the requests really failed or not. Ideally the http status code
+// would be appropriate but it is always 200. It would be nice to know if there
+// is a better way to do this...
 func (aq *AddQuery) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	switch start.Name.Local {
 	case "uuid":
@@ -92,7 +95,7 @@ func (aq *AddQuery) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 
 	// this seems oddly useless, need to find a better way to achieve it.
 	for {
-		t, _ := d.Token()
+		t, _ := d.Token() // nolint: errcheck, gas
 		switch tt := t.(type) {
 		case xml.EndElement:
 			if tt == start.End() {
