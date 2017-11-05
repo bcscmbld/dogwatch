@@ -5,6 +5,21 @@
 
 DogWatch is a DogNZB cli tool and library to interact with DogNZB's Watchlists. It supports adding, removing and listing items in both TV and Movies watchlists.
 
+## Installation
+
+Simply download the latest release from the [releases page](https://github.com/gugahoi/dogwatch/releases)
+
+```bash
+# download the latest tar
+curl -LOs https://github.com/gugahoi/dogwatch/releases/download/0.1.1/dogwatch_0.1.1_darwin_amd64.tar.gz
+
+# uncompress and put the binary into /usr/local/bin
+tar -C /usr/local/bin -xvf dogwatch*.tar.gz dogwatch
+
+# profit!
+dogwatch version
+```
+
 ## Usage
 
 ### CLI
@@ -19,17 +34,17 @@ dogwatch list tv --apikey SOME-API-KEY
 # Alternatively set `DOGNZB_API` env variable instead if using `--apikey` flag
 export DOGNZB_API="SOME-API-KEY"
 
-# Add a movie to the watchlist
-dogwatch add movie tt123456
+# Add movies to the watchlist
+dogwatch add movies tt123456 tt567890
 
-# Add a seties to the watchlist
-dogwatch add tv 123456
+# Add series to the watchlist
+dogwatch add tv 123456 098767
 
-# remove a movie from the watchlist
-dogwatch remove movie tt123456
+# remove movies from the watchlist
+dogwatch remove movies tt123456 ...
 
-# remove a series from the watchlist
-dogwatch remove tv 123456
+# remove series from the watchlist
+dogwatch remove tv 123456 ...
 ```
 
 ### Library
@@ -43,10 +58,15 @@ func main() {
     d := dognzb.New("some-api-key")
 
     // list movies
-    d.List(dognzb.Movies)
+    items, err := d.List(dognzb.Movies)
+    if err != nil {...}
+    for _, item := range items {
+        fmt.Println(item.Title, item.GetID())
+    }
 
     // add movie
-    d.Add(dognzb.Movies, "tt123455")
+    q, err := d.Add(dognzb.Movies, "tt123455")
+    if err != nil {...}
 }
 ```
 
@@ -59,8 +79,8 @@ This project uses [`dep`](https://github.com/golang/dep) as the dependency manag
 dep ensure
 
 # build
-go build *.go -o dogwatch
+make build
 
-# profit!
-./dogwatch --help
+# yeah!
+./build/dogwatch version
 ```
