@@ -23,16 +23,26 @@ var RootCmd = &cobra.Command{
 	Use:   "dogwatch",
 	Short: "dogwatch is a cli tool to interact with DogNZB's Watchlists",
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-		if cmd.Name() == "version" {
-			return nil
-		}
-
-		if api == "" {
-			api = os.Getenv("DOGNZB_API")
-			if api == "" {
-				return fmt.Errorf("missing required flag: -a, --apikey")
-			}
-		}
-		return nil
+		return CheckAPI(cmd.Use, &api)
 	},
+}
+
+// CheckAPI checks if the api has been provided through a flag
+// or env variable for the commands that need it, which are
+// all but the version command.
+func CheckAPI(cmdName string, api *string) error {
+	if cmdName == "version" {
+		return nil
+	}
+
+	if *api != "" {
+		return nil
+	}
+
+	*api = os.Getenv("DOGNZB_API")
+	if *api != "" {
+		return nil
+	}
+
+	return fmt.Errorf("missing required flag: -a, --apikey")
 }
