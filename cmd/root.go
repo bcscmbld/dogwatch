@@ -29,10 +29,14 @@ var RootCmd = &cobra.Command{
 
 // CheckAPI checks if the api has been provided through a flag
 // or env variable for the commands that need it, which are
-// all but the version command.
+// all but the version and help commands.
 func CheckAPI(cmdName string, api *string) error {
-	if cmdName == "version" {
-		return nil
+	allowedCmds := []string{"version", "help"}
+
+	for _, cmd := range allowedCmds {
+		if cmdName == cmd {
+			return nil
+		}
 	}
 
 	if *api != "" {

@@ -50,6 +50,13 @@ func TestCheckAPI(t *testing.T) {
 			apiEnv:    "some-env-api",
 			shouldErr: false,
 		},
+		{
+			desc:      "help no api",
+			name:      "help",
+			api:       "",
+			apiEnv:    "",
+			shouldErr: false,
+		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
