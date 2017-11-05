@@ -143,11 +143,14 @@ func TestAddHappyPath(t *testing.T) {
 			d := NewMockGetter("add", tC.desc, http.StatusOK)
 
 			// act
-			err := d.Add(tC.kind, tC.id)
+			q, err := d.Add(tC.kind, tC.id)
 
 			// assert
 			if err != nil {
 				t.Errorf("expected err to be '%v', got '%v'", nil, err)
+			}
+			if q == nil {
+				t.Errorf("expected q not to be '%v', got '%v'", nil, q)
 			}
 		})
 	}
@@ -187,7 +190,7 @@ func TestAddSadPath(t *testing.T) {
 			d := NewMockGetter("add", tC.desc, tC.status)
 
 			// act
-			err := d.Add(tC.kind, tC.id)
+			q, err := d.Add(tC.kind, tC.id)
 
 			// assert
 			if err == nil {
@@ -196,6 +199,10 @@ func TestAddSadPath(t *testing.T) {
 
 			if err.Error() != tC.errMsg {
 				t.Errorf("expected err to not be '%v', got '%v'", tC.errMsg, err)
+			}
+
+			if q != nil {
+				t.Errorf("expected q to be '%v', got '%v'", nil, q)
 			}
 		})
 	}

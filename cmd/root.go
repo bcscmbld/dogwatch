@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/gugahoi/dogwatch/pkg/dognzb"
+
 	"github.com/spf13/cobra"
 )
 
@@ -49,4 +51,17 @@ func CheckAPI(cmdName string, api *string) error {
 	}
 
 	return fmt.Errorf("missing required flag: -a, --apikey")
+}
+
+// Both tpye fn and func routine are on their own
+// for testing purposes only.
+type fn func(t dognzb.Type, id string) (*dognzb.AddRemoveQuery, error)
+
+func routine(f fn, t dognzb.Type, id string, done chan<- string) {
+	q, err := f(t, id)
+	if err != nil {
+		done <- fmt.Sprintf("failed to remove %v: %v", id, err) // nolint: gas
+		return
+	}
+	done <- fmt.Sprintf("%v", q.Description) // nolint: gas
 }

@@ -3,7 +3,6 @@ package cmd
 import (
 	"fmt"
 	"net/http"
-	"os"
 
 	"github.com/gugahoi/dogwatch/pkg/dognzb"
 	"github.com/spf13/cobra"
@@ -34,21 +33,13 @@ var addTVCmd = &cobra.Command{
 
 func add(t dognzb.Type, ids []string) {
 	d := dognzb.New(api, &http.Client{})
-	done := make(chan int, len(ids))
+	done := make(chan string, 1)
 
 	for _, id := range ids {
-		go func(id string, done chan<- int) {
-			err := d.Add(t, id)
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "failed to add %v: %v\n", id, err) // nolint: gas
-			} else {
-				fmt.Fprintf(os.Stdout, "added %v\n", id) // nolint: gas
-			}
-			done <- 1
-		}(id, done)
+		go routine(d.Add, t, id, done)
 	}
 
 	for i := 0; i < len(ids); i++ {
-		<-done
+		fmt.Println(<-done)
 	}
 }
