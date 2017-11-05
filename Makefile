@@ -1,13 +1,11 @@
 .PHONY: all test build lint
 
-ldflags="-X github.com/gugahoi/dogwatch/cmd.version=1.0.0"
+ldflags="-X github.com/gugahoi/dogwatch/cmd.version=snapshot"
 
 all: test
 
 build:
-	GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -ldflags ${ldflags} -o build/dogwatch-macos
-	GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -ldflags ${ldflags} -o build/dogwatch-windows
-	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags ${ldflags} -o build/dogwatch-linux
+	go build -ldflags ${ldflags} -o build/dogwatch-macos
 
 test:
 	go test -v -race ./...

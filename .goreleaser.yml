@@ -1,0 +1,11 @@
+builds:
+  - 
+    goos:
+      - darwin
+      - linux
+      - windows
+    goarch:
+      - amd64
+    ldflags: -X github.com/gugahoi/dogwatch/cmd.version={{.Version}}
+    env:
+      - CGO_ENABLED=0

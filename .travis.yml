@@ -1,14 +1,16 @@
 language: go
 go:
-  - 1.9
-
+- 1.9
 install:
-  - go get github.com/mattn/goveralls
-  - go get -u github.com/golang/dep/cmd/dep
-  - dep ensure
-
+- go get github.com/mattn/goveralls
+- go get -u github.com/golang/dep/cmd/dep
+- go get github.com/goreleaser/goreleaser
+- dep ensure
 script:
-  - make test
-
+- make test
+- goveralls -service=travis-ci
 after_success:
-  - $GOPATH/bin/goveralls -service=travis-ci
+- test -n "$TRAVIS_TAG" && curl -sL https://git.io/goreleaser | bash
+env:
+  matrix:
+    secure: geLzdTAm3BVEk9qe9CHlCY9QBfrIABwSxNp1tCVZqstaoCrsF4at7CbU8WzIVHZT0H0OhZbTyI2d46xoj9uPhH4PnjOV+tRc1dl9245ehoTYOOQFOo51hU0qnbK2Kht3Q6h1GJDAPJo4qRm++PDnAB21VGS0Ing81uo4MjUkh9ZUnAQSw15AyPhQ5m7vw2WbKg+XaBMdgfceDJ4cHTXXrSVk+pU7NU5STsTrWF1mASoQmM/GtSKXXWIugYGRNZiPlHJO0Gnk32LQLkfn5RHP+VXIy71BSu6yIVL+FZIfMOuMuQ0fcGaXTedJ39en5E2jgfhQ4f91QYDkASjYPKpxuOREXCwHNtXdd7z6D0s9s/yrW8SFtrdvgT1PmmKFUAxitbVaYWSjvLchHkq0O0jm7S0SEXOphzdrfuU1HOFCgOfHHplmxqdoDMdENphXgpRCSHEXFuopaanSr0NPrD0ficUxDGFq+i5fWqRArYRJvDhoAyvF9ypfgTleEIkK5FYxKfbcVooQFPrJit4VIbr1hBocxbVZ9GPudzNBliCfloIlpqZpD8BBUF5mZ7JfflfTEWPbPbL/MErAKIA/y+4sIfuJi2hn8cgd13MG+GgwgigkZCVn2eJGRv78ZhDVVY945XraUZ/rCagLmaF/ZzzDffvEIxl67M729MJvUfNYIYg=
