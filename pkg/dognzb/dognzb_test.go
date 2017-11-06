@@ -298,7 +298,7 @@ func (m *mockGetter) Get(url string) (*http.Response, error) {
 }
 
 func NewMockGetter(kind, name string, status int) *(dognzb.DogNZB) {
-	body, _ := ioutil.ReadFile(fmt.Sprintf("./fixtures/%s/%s.xml", kind, name))
+	body, _ := ioutil.ReadFile(fmt.Sprintf("./testdata/%s/%s.xml", kind, name))
 	return dognzb.New("another-api", &mockGetter{
 		response: &http.Response{
 			StatusCode: status,
