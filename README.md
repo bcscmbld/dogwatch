@@ -26,12 +26,12 @@ dogwatch version
 
 ```bash
 # List all movies in watchlist
-dogwatch list movies --apikey SOME-API-KEY
+dogwatch list movies --api SOME-API-KEY
 
 # List all series in watchlist
-dogwatch list tv --apikey SOME-API-KEY
+dogwatch list tv --api SOME-API-KEY
 
-# Alternatively set `DOGNZB_API` env variable instead if using `--apikey` flag
+# Alternatively set `DOGNZB_API` env variable instead if using `--api` flag
 export DOGNZB_API="SOME-API-KEY"
 
 # Add movies to the watchlist
